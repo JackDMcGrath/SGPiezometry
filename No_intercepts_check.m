@@ -70,7 +70,7 @@ phase = 'Quartz-new'; % Phase to measure. Must match a phase present in CS.
 crystal = 'trigonal'; % Crystal system of phase to measure.
 test = 0; % Set to 1 to speed up analysis when troubleshooting.
 include_low = 0; % to include analysis, set to 1. Otherwise, set to 0
-plt_flg = 0;
+plt_flg = 0; % Set to 1 to plot all intercepts, set to 0 to plot only nx_max
 dev = 1; % Use development codes
 
 %% END OF USER INPUTS

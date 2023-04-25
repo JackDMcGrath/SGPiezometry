@@ -92,8 +92,8 @@ SG_piezometer =[1]; % if user wishes to use the same shear moduli and Burgers ve
 Piezometer_choice = [1]; % If value = 1, piezometric equation will be eq. 1 from Goddard et al. (2020). If value = 2, piezometric equation will be eq. 2 from Goddard et al. (2020)
 Burgers = [5.1*10^-4]; % Burgers vector of phase of interest. Values used in the Goddard et al. (2020) papar are: 5.1*10^-4 microns for quartz and 4.75*10^-4 microns for olivine.   
 Shear_M = [4.2*10^4]; % Shear modulus of phase of interest. Values used in the Goddard et al. (2020) paper are: 4.2*10^4 MPa (Quartz), 7.78*10^4 MPa (Fo90), and 6.26*10^4 MPa(Fo50).  
-plot_flg = 1;
-dev = 1;
+plot_flg = 1; % Set to 1 to plot everything, set to 0 to not produce plots for each misorientation
+dev = 1; % Set to 1 to use development codes
 
 %% END OF USER INPUTS 
 

@@ -91,8 +91,8 @@ crystal = 'trigonal'; % Crystal system of phase to measure.
 Phase_map = 0; % Set to 1 to plot a phase map of the EBSD data. 
 Band_contrast = 0; % Set to 1 to plot a band contrast map.
 test = 0; % Set to 1 to speed up analysis when troubleshooting.
-plot_its = []; % set the iteration numbers that you would like to plot. Keep empty to plot none, set to 10 for all
-dev = 1;
+plot_its = []; % set the iteration numbers that you would like to plot (0-9). Keep empty to plot none, set to 10 for all
+dev = 1; % Set to 1 to use development codes
 %% END OF USER INPUTS 
 
 %% Programmatically calculate other necessary variables 
