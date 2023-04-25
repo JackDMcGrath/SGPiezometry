@@ -1,5 +1,6 @@
 function prep_mtex(version, SGPpath)
 
+% Set up mtex version and path variables
 if nargin < 1
     mtex_version = '5.1.1SGP';
 else
@@ -7,37 +8,32 @@ else
 end
 
 if nargin < 2
-<<<<<<< HEAD
     SGPpath = '/nfs/a285/homes/eejdm/software/SGPiezometry';
-=======
-    SGPpath = '/nfs/a285/homes/eejdm/SGPiezometry';
->>>>>>> 5021c4d97e2bf9a06aad1b4588ea3db980fcff51
-else
-    SGPpath;
 end
 
 curdir = pwd;
 
 mtex = [SGPpath, filesep, 'mtex-', mtex_version];
 
-<<<<<<< HEAD
 fprintf('mtex location: %s\n', mtex)
-=======
-fprintf('mtex location: %s', mtex)
->>>>>>> 5021c4d97e2bf9a06aad1b4588ea3db980fcff51
 
+% Some MTEX commands have the same name as actual matlab commands for
+% compatibility reasons. Turn off warning during installation
+warning('off', 'MATLAB:dispatcher:nameConflict')
+
+% Change into the mtex folder and install mtex
 cd(mtex)
-
 install_mtex
 
+% Add mtex and SGP to path (mtex normally added in installation, but this
+% sometimes fails
 addpath(genpath(mtex))
 addpath('/nfs/a285/homes/eejdm/SGPiezometry')
 
+% Turn name conflict warning back on
+warning('on', 'MATLAB:dispatcher:nameConflict')
+
+% Return to original working directory
 cd(curdir)
 
-<<<<<<< HEAD
 fprintf('Ready to roll!!!\n')
-=======
-fprintf('Ready to roll!!!\n')
-
->>>>>>> 5021c4d97e2bf9a06aad1b4588ea3db980fcff51
