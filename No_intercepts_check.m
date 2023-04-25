@@ -56,9 +56,9 @@ setMTEXpref('zAxisDirection','outOfPlane');
 
 % Specify File Names
 % path to file
-pname = '/nfs/a285/homes/eejdm/SGPiezometry_Jack1/Izzy';
+pname = '/nfs/a285/homes/eejdm/SGPiezometry/Izzy';
 % which file to be imported
-file = 'CPA2.ctf';
+file = 'vgb1.ctf';
 fname = [pname filesep file];
 
 %% USER INPUT: Required information

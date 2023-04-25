@@ -63,9 +63,9 @@ setMTEXpref('zAxisDirection','outOfPlane');
 
 % Specify File Names 
 % path to file 
-pname = '/nfs/a285/homes/eejdm/SGPiezometry_Jack1/Izzy';
+pname = '/nfs/a285/homes/eejdm/SGPiezometry/Izzy';
 % which file to be imported
-file = 'CPA2_again.ctf';
+file = 'vgb1.ctf';
 fname = [pname filesep file];
 
 %% USER INPUT: Required information 
@@ -75,10 +75,10 @@ sg_min = [2]; % Minimum misorientation for subgrain boundary (for figures)
 cutoff = [1]; % Minimum misorientation for subgrain boundary (for calculation)
 phase = 'Quartz-new'; % Phase to measure. Must match a phase present in CS.
 crystal = 'trigonal'; % Crystal system of phase to measure. 
-Phase_map = 1; % Set to 1 to plot a phase map of the EBSD data. 
-Band_contrast = 1; % Set to 1 to plot a band contrast map of the EBSD data.
-test = 1; % Set to 1 to speed up analysis when troubleshooting. 
-plot_its = []; % set the iteration numbers that you would like to plot (0-9). Keep empty to plot none, set to 10 for all
+Phase_map = 0; % Set to 1 to plot a phase map of the EBSD data. 
+Band_contrast = 0; % Set to 1 to plot a band contrast map of the EBSD data.
+test = 0; % Set to 1 to speed up analysis when troubleshooting. 
+plot_its = [0]; % set the iteration numbers that you would like to plot (0-9). Keep empty to plot none, set to 10 for all
 dev = 1; % Set to 1 to use development codes
 %% END OF USER INPUTS 
 
@@ -102,6 +102,7 @@ if plot_its == 10
 end
 
 for a = 0:1:9
+    fprintf('Checking %.0f%% area\n', 100 - a * 10)
     % Reduce the area of the map 
     Height = y_max - a*0.1*y_max;
     Length = x_max - a*0.1*y_max;
@@ -166,4 +167,3 @@ end
   right_colour = [0 0 0];
   set(0,'defaultAxesColorOrder',[left_colour; right_colour]);
   hold on 
-

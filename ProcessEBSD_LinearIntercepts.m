@@ -74,7 +74,6 @@ pname = '/nfs/a285/homes/eejdm/SGPiezometry/Izzy';
 file = 'CPA2.ctf';
 fname = [pname filesep file];
 
-
 % USER INPUT: Required information 
 
 nx = [40]; % Number of intercept lines 
@@ -86,7 +85,7 @@ crystal = 'trigonal'; % Crystal system of phase to measure.
 Phase_map = 0; % Set to 1 to plot a phase map of the EBSD data. 
 Band_contrast = 0; % Set to 1 to plot a band contrast map.
 test = 0; % Set to 1 to speed up analysis when troubleshooting. 
-Check_different_misorientation =  1; % To run minimum misorientations used to define a 
+Check_different_misorientation =  0; % To run minimum misorientations used to define a 
                                      % subgrain size boundary from 1 to 10 degrees, set to 1. Otherwise, set to 0
 SG_piezometer =[1]; % if user wishes to use the same shear moduli and Burgers vector as in the subgrain-size piezometer paper then SG_piezometer = [1] will output a stress. 
 Piezometer_choice = [1]; % If value = 1, piezometric equation will be eq. 1 from Goddard et al. (2020). If value = 2, piezometric equation will be eq. 2 from Goddard et al. (2020)
@@ -97,7 +96,6 @@ dev = 1; % Set to 1 to use development codes
 
 %% END OF USER INPUTS 
 
-
 %% Create empty arrays to store data within 
 %% Programmatically calculate other necessary variables 
 ny = nx; % Set number of intercepts in y-direction to equal number of intercepts in the x-direction.
@@ -107,7 +105,6 @@ Mis_orientation = [];
 Subgrain_mis_ori = [];
 Lengths_X_1 =[];
 Lengths_Y_1 =[];
-
 
 %% Calculate and plot 
 [ebsd,grains,subgrains] = ProcessEBSD_fun(fname,gb_min,sg_min, CS, test, Phase_map, Band_contrast);
@@ -164,8 +161,6 @@ elseif Check_different_misorientation == 0
     Lengths_Y_1 = [Lengths_Y_1, lengths_y];
 end 
 
-
-
 % Plot histogram of line intercepts 
 % Number of bins
 figure
@@ -197,6 +192,3 @@ if SG_piezometer == 1
     fprintf('Calibrated Stress: %.2f MPa\n', Equivalent_stress(1))
     fprintf('UnCalibrated Stress: %.2f MPa\n', Equivalent_stress(2))
 end
-
-
-    

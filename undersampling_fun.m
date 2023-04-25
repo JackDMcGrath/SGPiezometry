@@ -19,7 +19,7 @@ for Int = 1:1:Int_max
 fname_new = [sampname '_int' num2str(Int)];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
-fprintf('Checking area size %.0f/%.0f\n', Int, Int_max)
+fprintf('Running undersampling_int %.0f/%.0f\n', Int, Int_max)
 
 Input_CTF = [sampname '.ctf'];
 data = importdata(Input_CTF,';');
