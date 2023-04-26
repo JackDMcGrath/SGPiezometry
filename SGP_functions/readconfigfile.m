@@ -83,7 +83,7 @@ par.include_low = getparval(cfgcell,'include_low',0);
 par.Int_max = getparval(cfgcell,'Int_max', 10);
 par.title_text = getparval(cfgcell,'title_text',par.file);
 par.header_size = getparval(cfgcell,'header_size',16);
-par.Check_different_misorientations = getparval(cfgcell,'Check_different_misorientations',0);
+par.Check_different_misorientations = getparval(cfgcell,'Check_different_misorientation',0);
 par.SG_piezometer = getparval(cfgcell,'SG_piezometer',1);
 
 if strfind(lower(par.phase),'quartz')
