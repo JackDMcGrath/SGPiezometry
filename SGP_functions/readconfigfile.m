@@ -50,10 +50,10 @@ else
             if strcmpi(cfgcell{ii,2}, 'NotIndexed')
                 par.CS{size(par.CS,1) + 1} = 'NotIndexed';
             elseif strfind(cfgcell{ii,2}, 'crystalSymmetry')
-                crys = split(strrep(cfgcell{ii,2},',',' '));
-                symm = crys{find(ismember(crys, 'crystalSymmetry')) + 1};
-                mineral = crys{find(ismember(crys, 'mineral')) + 1};
-                color = crys{find(ismember(crys, 'color')) + 1};
+                crys = split(cfgcell{ii,2},',');
+                symm = strtrim(crys{find(contains(crys, 'crystalSymmetry')) + 1});
+                mineral = strtrim(crys{find(contains(crys, 'mineral')) + 1});
+                color = strtrim(crys{find(contains(crys, 'color')) + 1});
                 par.CS{size(par.CS,2) + 1} = crystalSymmetry(symm, 'mineral', mineral, 'color', color);
             end
         end
