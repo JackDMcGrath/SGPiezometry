@@ -1,7 +1,7 @@
 %% ProcessEBSD_fun - imports and processes EBSD data 
 % Rellie M. Goddard, July 2020
 
-function [fname_new, stepx_all, Step_size_SG_size] = undersampling_fun(Int_max, sampname, header_size,gb_min,sg_min,test, Phase_map, Band_contrast, nx, ny, cutoff, phase, crystal,CS, plot_its, dev);
+function [fname_new, stepx_all, Step_size_SG_size] = undersampling_fun(Int_max, sampname, header_size,gb_min,sg_min,test, Phase_map, Band_contrast, nx, ny, cutoff, phase, crystal,CS, plot_its, dev, voronoi);
 
 Step_size_SG_size = [];
 stepx_all = [];
@@ -69,10 +69,10 @@ fclose(fileid);
 
 fname = [fname_new '.ctf'];
 if ismember(Int, plot_its)
-    [ebsd,grains,subgrains] = ProcessEBSD_fun(fname, gb_min, sg_min, CS, test, Phase_map, Band_contrast);
+    [ebsd,grains,subgrains] = ProcessEBSD_fun(fname, gb_min, sg_min, CS, test, Phase_map, Band_contrast, voronoi);
     [Mean_Lengths_X,Mean_Lengths_Y, lengths_x, lengths_y] = LinearIntercepts_fun(ebsd,nx,ny,cutoff,phase,crystal, 1, dev);
 else
-    [ebsd,grains,subgrains] = ProcessEBSD_fun(fname, gb_min, sg_min, CS, test, 0, 0);
+    [ebsd,grains,subgrains] = ProcessEBSD_fun(fname, gb_min, sg_min, CS, test, 0, 0, voronoi);
     [Mean_Lengths_X,Mean_Lengths_Y, lengths_x, lengths_y] = LinearIntercepts_fun(ebsd,nx,ny,cutoff,phase,crystal, 0, dev);
 end
 d_h = lengths_x;
