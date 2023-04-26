@@ -77,6 +77,9 @@ par.Phase_map = getparval(cfgcell,'Phase_map',0);
 par.Band_contrast = getparval(cfgcell,'Band_contrast',0);
 par.plt_flg = getparval(cfgcell,'plt_flag',0);
 par.plt_its = getparval(cfgcell,'plt_its',[]);
+if ~isempty(par.plt_its)
+    par.plt_its = str2num(par.plt_its);
+end
 
 % Script specific
 par.include_low = getparval(cfgcell,'include_low',0);
