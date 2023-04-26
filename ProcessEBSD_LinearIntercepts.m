@@ -1,3 +1,4 @@
+function ProcessEBSD_Linearintercepts(config_file)
 %% ProcessEBSD_LinearIntercepts - measures mean line intercept length
 % Rellie M. Goddard, July
 
@@ -50,8 +51,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Data import
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-close, clear all
-% Specify File Names
+close all
+
+[par] = readconfigfile(config_file);
 
 % USER INPUT: Data inport information from MTEX
 % This information is produced automatically by the MTEX import wizard
@@ -59,40 +61,32 @@ close, clear all
 
 % Specify Crystal and Specimen Symmetries
 % crystal symmetry
-CS =  {
-    'NotIndexed',
-    crystalSymmetry('-3m1', 'mineral', 'Quartz-new', 'color', 'light blue'),
-    crystalSymmetry('-1', 'mineral', 'Arsenopyrite', 'color', 'light green')};
+% Specify Crystal and Specimen Symmetries
+% crystal symmetry
+CS =  par.CS;
 % plotting convention
 setMTEXpref('xAxisDirection','east');
 setMTEXpref('zAxisDirection','outOfPlane');
 
 % Specify File Names
-% path to file
-pname = '/nfs/a285/homes/eejdm/SGPiezometry/Izzy';
-% which file to be imported
-file = 'vgb1.ctf';
-fname = [pname filesep file];
+fname = par.fname;
 
-% USER INPUT: Required information
-
-nx = [40]; % Number of intercept lines
-gb_min = [10]; % Minimum misorientation for grain boundary (for figures)
-sg_min = [1]; % Minimum misorientation for subgrain boundary (for figures)
-cutoff = [1]; % Minimum misorientation for subgrain boundary (for calculation)
-phase = 'Quartz-new'; % Phase to measure. Must match a phase present in CS.
-crystal = 'trigonal'; % Crystal system of phase to measure.
-Phase_map = 1; % Set to 1 to plot a phase map of the EBSD data.
-Band_contrast = 1; % Set to 1 to plot a band contrast map.
-test = 0; % Set to 1 to speed up analysis when troubleshooting.
-Check_different_misorientation =  1; % To run minimum misorientations used to define a
-% subgrain size boundary from 1 to 10 degrees, set to 1. Otherwise, set to 0
-SG_piezometer =[1]; % if user wishes to use the same shear moduli and Burgers vector as in the subgrain-size piezometer paper then SG_piezometer = [1] will output a stress.
-Piezometer_choice = [1]; % If value = 1, piezometric equation will be eq. 1 from Goddard et al. (2020). If value = 2, piezometric equation will be eq. 2 from Goddard et al. (2020)
-Burgers = [5.1*10^-4]; % Burgers vector of phase of interest. Values used in the Goddard et al. (2020) papar are: 5.1*10^-4 microns for quartz and 4.75*10^-4 microns for olivine.
-Shear_M = [4.2*10^4]; % Shear modulus of phase of interest. Values used in the Goddard et al. (2020) paper are: 4.2*10^4 MPa (Quartz), 7.78*10^4 MPa (Fo90), and 6.26*10^4 MPa(Fo50).
-plot_flg = 0; % Set to 1 to plot everything, set to 0 to not produce plots for each misorientation
-dev = 1; % Set to 1 to use development codes
+%% USER INPUT: Required information (taken from config)
+nx = par.nx; % Number of intercept lines
+gb_min = par.gb_min; % Minimum misorientation for grain boundary (for figures)
+sg_min = par.sg_min; % Minimum misorientation for subgrain boundary (for figures)
+cutoff = par.cutoff; % Minimum misorientation for subgrain boundary (for calculation)
+phase = par.phase; % Phase to measure. Must match a phase present in CS.
+crystal = par.crystal; % Crystal system of phase to measure.
+Phase_map = par.Phase_map; % Set to 1 to plot a phase map of the EBSD data.
+Band_contrast = par.Band_contrast; % Set to 1 to plot a band contrast map.
+test = par.test; % Set to 1 to speed up analysis when troubleshooting.
+Check_different_misorientation =  par.Check_different_misorientations; % To run minimum misorientations used to define a subgrain size boundary from 1 to 10 degrees, set to 1. Otherwise, set to 0
+SG_piezometer = par.SG_piezometer; % if user wishes to use the same shear moduli and Burgers vector as in the subgrain-size piezometer paper then SG_piezometer = [1] will output a stress.
+Burgers = par.Burgers; % Burgers vector of phase of interest. Values used in the Goddard et al. (2020) papar are: 5.1*10^-4 microns for quartz and 4.75*10^-4 microns for olivine.
+Shear_M = par.Shear_M; % Shear modulus of phase of interest. Values used in the Goddard et al. (2020) paper are: 4.2*10^4 MPa (Quartz), 7.78*10^4 MPa (Fo90), and 6.26*10^4 MPa(Fo50).
+plot_flg = par.plt_flg; % set the iteration numbers that you would like to plot (0-9). Keep empty to plot none, set to 10 for all
+dev = par.dev; % Set to 1 to use development codes
 
 %% END OF USER INPUTS
 
@@ -108,7 +102,7 @@ Lengths_Y_1 =[];
 
 %% Calculate and plot
 [ebsd,grains,subgrains] = ProcessEBSD_fun(fname,gb_min,sg_min, CS, test, Phase_map, Band_contrast);
-fprintf('Data Loaded')
+fprintf('Data Loaded\n')
 % Linear intercept analysis
 
 if Check_different_misorientation == 1
@@ -193,6 +187,7 @@ if SG_piezometer == 1
     [Equivalent_stress(2)] = Stress_Calulation_fun(Burgers,Shear_M,2,a_mean_RG);
     
     % Print Von Mises Equilivant_Stress
-    fprintf('Calibrated Stress: %.2f MPa\n', Equivalent_stress(1))
-    fprintf('UnCalibrated Stress: %.2f MPa\n', Equivalent_stress(2))
+    fprintf('\tCalibrated Stress:\t%.2f MPa\n', Equivalent_stress(1))
+    fprintf('\tUnCalibrated Stress:\t%.2f MPa\n', Equivalent_stress(2))
+end
 end
