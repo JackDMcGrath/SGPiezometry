@@ -1,3 +1,4 @@
+function No_intercepts_check(config_file)
 %% No_intercepts_check
 % Rellie M. Goddard, July 2020
 
@@ -38,7 +39,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Data import
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-close, clear all
+close all
+
+[par] = readconfigfile(config_file);
 
 % USER INPUT: Data inport information from MTEX
 % This information is produced automatically by the MTEX import wizard
@@ -46,32 +49,25 @@ close, clear all
 
 % Specify Crystal and Specimen Symmetries
 % crystal symmetry
-CS =  {
-    'NotIndexed',
-    crystalSymmetry('-3m1', 'mineral', 'Quartz-new', 'color', 'light blue'),
-    crystalSymmetry('-1', 'mineral', 'Arsenopyrite', 'color', 'light green')};
+CS = par.CS;
 % plotting convention
 setMTEXpref('xAxisDirection','east');
 setMTEXpref('zAxisDirection','outOfPlane');
 
 % Specify File Names
-% path to file
-pname = '/nfs/a285/homes/eejdm/SGPiezometry/Izzy';
-% which file to be imported
-file = 'vgb1.ctf';
-fname = [pname filesep file];
+fname = par.fname;
 
-%% USER INPUT: Required information
-nx_max = [50]; % Max number of intercepts to try. Must be multiple of 10. Suggested starting value, 30 or 40
-gb_min = [10]; % Minimum misorientation for grain boundary (for figures)
-sg_min = [2]; % Minimum misorientation for subgrain boundary (for figures)
-cutoff = [1]; % Minimum misorientation for subgrain boundary (for calculation)
-phase = 'Quartz-new'; % Phase to measure. Must match a phase present in CS.
-crystal = 'trigonal'; % Crystal system of phase to measure.
-test = 0; % Set to 1 to speed up analysis when troubleshooting.
-include_low = 0; % to include analysis, set to 1. Otherwise, set to 0
-plt_flg = 0; % Set to 1 to plot all intercepts, set to 0 to plot only nx_max
-dev = 1; % Use development codes
+%% USER INPUT: Required information (taken from config)
+nx_max = par.nx; % Max number of intercepts to try. Must be multiple of 10. Suggested starting value, 30 or 40
+gb_min = par.gb_min; % Minimum misorientation for grain boundary (for figures)
+sg_min = par.sg_min; % Minimum misorientation for subgrain boundary (for figures)
+cutoff = par.cutoff; % Minimum misorientation for subgrain boundary (for calculation)
+phase = par.phase; % Phase to measure. Must match a phase present in CS.
+crystal = par.crystal; % Crystal system of phase to measure.
+test = par.test; % Set to 1 to speed up analysis when troubleshooting.
+include_low = par.include_low; % to include analysis, set to 1. Otherwise, set to 0
+plt_flg = par.plt_flg; % Set to 1 to plot all intercepts, set to 0 to plot only nx_max
+dev = par.dev; % Use development codes
 
 %% END OF USER INPUTS
 
@@ -163,3 +159,5 @@ set(0,'DefaultAxesFontSize',15,'DefaultAxesFontName','helvetica','DefaultAxesTic
 ylabel('Change relative to previous (%)', 'FontSize', 15);
 xlabel('No. Intercepts ', 'FontSize', 15);
 box on
+
+end

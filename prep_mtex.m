@@ -36,6 +36,7 @@ install_mtex
 % sometimes fails
 addpath(genpath(mtex))
 addpath(SGPpath)
+addpath([SGPpath, filesep, 'SGP_functions'])
 
 % Turn name conflict warning back on
 warning('on', 'MATLAB:dispatcher:nameConflict')

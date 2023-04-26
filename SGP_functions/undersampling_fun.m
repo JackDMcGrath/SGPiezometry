@@ -68,7 +68,6 @@ fprintf(fileid,'%s\r\n',data_new{:,:});
 fclose(fileid);
 
 fname = [fname_new '.ctf'];
-[ebsd,grains,subgrains] = ProcessEBSD_fun(fname, gb_min, sg_min, CS, test, Phase_map, Band_contrast);
 if ismember(Int, plot_its)
     [ebsd,grains,subgrains] = ProcessEBSD_fun(fname, gb_min, sg_min, CS, test, Phase_map, Band_contrast);
     [Mean_Lengths_X,Mean_Lengths_Y, lengths_x, lengths_y] = LinearIntercepts_fun(ebsd,nx,ny,cutoff,phase,crystal, 1, dev);

@@ -1,3 +1,4 @@
+function Area_Analysis_reduction(config_file)
 %% Area_Analysis_reduction - test to see if the map size is large enough
 % Rellie M. Goddard, July 2020
 
@@ -12,7 +13,7 @@
 % * nx: The number of intercept lines, chosen based on analysis from 
 %       No_intercepts_check.m.
 % * gb_min: Minimum misorientation angle to define a grain boundary in 
-%       degrees. Used for constructing maps.
+%       degrees. Used for constructing m(taken from config)aps.
 % * sg_min: Minimum misorientation angle to define a subgrain boundary in 
 %       degrees. Only used for constructing maps.
 % * cutoff: Minimum misorientation angle to define a subgrain boundary in
@@ -46,40 +47,36 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Data import
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-close, clear all 
+close all 
+
+[par] = readconfigfile(config_file);
 
 % USER INPUT: Data inport information from MTEX
 % This information is produced automatically by the MTEX import wizard 
 % Paste in your CS, plotting conventions, pname, and fname here. 
 
-% Specify Crystal and Specimen Symmetries 
+% Specify Crystal and Specimen Symmetries
 % crystal symmetry
-CS =  {
-    crystalSymmetry('-3m1', 'mineral', 'Quartz-new', 'color', 'light blue'), ...
-    crystalSymmetry('-1', 'mineral', 'Arsenopyrite', 'color', 'light green')};
+CS =  par.CS;
 % plotting convention
 setMTEXpref('xAxisDirection','east');
 setMTEXpref('zAxisDirection','outOfPlane');
 
-% Specify File Names 
-% path to file 
-pname = '/nfs/a285/homes/eejdm/SGPiezometry/Izzy';
-% which file to be imported
-file = 'vgb1.ctf';
-fname = [pname filesep file];
+% Specify File Names
+fname = par.fname;
 
-%% USER INPUT: Required information 
-nx = [50]; % Number of intercept lines 
-gb_min = [10]; % Minimum misorientation for grain boundary (for figures)
-sg_min = [2]; % Minimum misorientation for subgrain boundary (for figures)
-cutoff = [1]; % Minimum misorientation for subgrain boundary (for calculation)
-phase = 'Quartz-new'; % Phase to measure. Must match a phase present in CS.
-crystal = 'trigonal'; % Crystal system of phase to measure. 
-Phase_map = 0; % Set to 1 to plot a phase map of the EBSD data. 
-Band_contrast = 0; % Set to 1 to plot a band contrast map of the EBSD data.
-test = 0; % Set to 1 to speed up analysis when troubleshooting. 
-plot_its = [0]; % set the iteration numbers that you would like to plot (0-9). Keep empty to plot none, set to 10 for all
-dev = 1; % Set to 1 to use development codes
+%% USER INPUT: Required information (taken from config)
+nx = par.nx; % Number of intercept lines
+gb_min = par.gb_min; % Minimum misorientation for grain boundary (for figures)
+sg_min = par.sg_min; % Minimum misorientation for subgrain boundary (for figures)
+cutoff = par.cutoff; % Minimum misorientation for subgrain boundary (for calculation)
+phase = par.phase; % Phase to measure. Must match a phase present in CS.
+crystal = par.crystal; % Crystal system of phase to measure.
+Phase_map = par.Phase_map; % Set to 1 to plot a phase map of the EBSD data.
+Band_contrast = par.Band_contrast; % Set to 1 to plot a band contrast map.
+test = par.test; % Set to 1 to speed up analysis when troubleshooting.
+plot_its = par.plt_its; % set the iteration numbers that you would like to plot (0-9). Keep empty to plot none, set to 10 for all
+dev = par.dev; % Set to 1 to use development codes
 %% END OF USER INPUTS 
 
 %% Programmatically calculate other necessary variables 
@@ -102,15 +99,12 @@ if plot_its == 10
 end
 
 for a = 0:1:9
-    fprintf('Checking %.0f%% area\n', 100 - a * 10)
     % Reduce the area of the map 
     Height = y_max - a*0.1*y_max;
-    Length = x_max - a*0.1*y_max;
-  
-    %plot(ebsd(phase),ebsd(phase).orientations)
-    %hold on 
+    Length = x_max - a*0.1*x_max;
+    fprintf('Checking %.0f%% dimensions (%.0f%% area)\n', 100 - a * 10, 100 * ((Length*Height)/(x_max*y_max)))
+    
     region = [((x_max/2)-(Length/2)) ((y_max/2)-(Height/2)) Length Height];
-    %rectangle('position',region,'edgecolor','r','linewidth',2)
     
     condition = inpolygon(ebsd,region);
     ebsd_mod = ebsd(condition);
@@ -167,3 +161,5 @@ end
   right_colour = [0 0 0];
   set(0,'defaultAxesColorOrder',[left_colour; right_colour]);
   hold on 
+
+end
