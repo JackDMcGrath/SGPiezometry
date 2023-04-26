@@ -7,6 +7,10 @@ Currently, to ensure that you use this sped-up version, ensure that the 'dev' fl
 
 2) To speed up processing, it is not necessarily necessary to plot the output of every iteration of the sensitivity tests, which, especially with large data sets, can be very slow. Therefore new plotting flags are included to reduce the plot outputs as needed.
 
+3) Further increases in processing time are availiable by deactivating the voronoi spatial decomposition, and instead just using UnitCell
+
+4) Parameters are now listed in a .conf file, and read into the commands this way. Consequently, scripts are now functions, and are run from the command line, e.g., ProcessEBSD_LinearIntercepts('Example.conf')
+
 References:  
 Goddard, R.M., Hansen, L.N., Wallis, D., Stipp, M., Holyoke III, C.W., Kumamoto, K.M. and Kohlstedt, D.L., 2020. A subgrain‐size piezometer calibrated for EBSD. Geophysical Research Letters, 47(23), p.e2020GL090056.  
 https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2020GL090056
