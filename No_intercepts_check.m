@@ -68,6 +68,7 @@ test = par.test; % Set to 1 to speed up analysis when troubleshooting.
 include_low = par.include_low; % to include analysis, set to 1. Otherwise, set to 0
 plt_flg = par.plt_flg; % Set to 1 to plot all intercepts, set to 0 to plot only nx_max
 dev = par.dev; % Use development codes
+voronoi = par.voronoi; % Use vornonoi decomposition
 
 %% END OF USER INPUTS
 
@@ -85,7 +86,7 @@ else
 end
 
 %  Call on the ProcessEBSD function.
-[ebsd,grains,subgrains] = ProcessEBSD_fun(fname,gb_min,sg_min, CS, test, 0, 0);
+[ebsd,grains,subgrains] = ProcessEBSD_fun(fname,gb_min,sg_min, CS, test, 0, 0, voronoi);
 
 if include_low
     for nx = 1:1:9

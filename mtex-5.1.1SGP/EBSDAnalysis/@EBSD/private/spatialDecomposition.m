@@ -12,7 +12,6 @@ function [V,F,I_FD] = spatialDecomposition(X,unitCell,varargin)
 if isempty(unitCell), unitCell = calcUnitCell(X); end
 
 if check_option(varargin,'unitCell')
-  
   % compute the vertices
   [V,faces] = generateUnitCells(X,unitCell,varargin{:});
  

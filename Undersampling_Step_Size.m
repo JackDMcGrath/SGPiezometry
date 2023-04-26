@@ -89,6 +89,7 @@ Band_contrast = par.Band_contrast; % Set to 1 to plot a band contrast map.
 test = par.test; % Set to 1 to speed up analysis when troubleshooting.
 plot_its = par.plt_its; % set the iteration numbers that you would like to plot (0-9). Keep empty to plot none, set to 10 for all
 dev = par.dev; % Set to 1 to use development codes
+voronoi = par.voronoi; % Use vornonoi decomposition
 %% END OF USER INPUTS
 
 %% Programmatically calculate other necessary variables
@@ -97,7 +98,7 @@ sampname = temp{end-1}; % Extract file name with no extension
 ny = nx; % Set number of intercepts in y-direction to equal number of intercepts in the x-direction.
 
 %% Calculate and plot
-[fname_new, stepx_all, Step_size_SG_size] = undersampling_fun(Int_max, sampname, header_size,gb_min,sg_min,test, Phase_map, Band_contrast, nx, ny, cutoff, phase, crystal, CS, plot_its, dev);
+[fname_new, stepx_all, Step_size_SG_size] = undersampling_fun(Int_max, sampname, header_size,gb_min,sg_min,test, Phase_map, Band_contrast, nx, ny, cutoff, phase, crystal, CS, plot_its, dev, voronoi);
 
 %close all
 

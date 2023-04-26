@@ -77,6 +77,7 @@ Band_contrast = par.Band_contrast; % Set to 1 to plot a band contrast map.
 test = par.test; % Set to 1 to speed up analysis when troubleshooting.
 plot_its = par.plt_its; % set the iteration numbers that you would like to plot (0-9). Keep empty to plot none, set to 10 for all
 dev = par.dev; % Set to 1 to use development codes
+voronoi = par.voronoi; % Use vornonoi decomposition
 %% END OF USER INPUTS 
 
 %% Programmatically calculate other necessary variables 
@@ -86,7 +87,7 @@ Mean_SG_size_area = zeros(1,10); % Creates an array to store the mean line inter
 %% Calculate and plot 
 
 % Call on the ProcessEBSD function. 
-[ebsd,grains,subgrains] = ProcessEBSD_fun(fname,gb_min,sg_min, CS, test, Phase_map, Band_contrast);
+[ebsd,grains,subgrains] = ProcessEBSD_fun(fname,gb_min,sg_min, CS, test, Phase_map, Band_contrast, voronoi);
 
 %% Reduce the area used to mean mean line intercepts from 
 

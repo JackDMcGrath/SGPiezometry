@@ -14,7 +14,7 @@ function [par] = readconfigfile(cfgfile)
 % Jack McGrath, 2023, Uni of Leeds
 %                                                                  
 % NOTE: use '%' for comments in config file, and ': ' to seperate names and
-% values (e.g. inv_e:   1)
+% values (e.g. plt_flg:   1)
 %=================================================================
 
 %% open config file
@@ -40,7 +40,7 @@ par.fname = [par.pname filesep par.file];
 calc_CS = getparval(cfgcell,'calc_CS',1);
 
 if calc_CS
-    ebsd = loadEBSD(par.fname);
+    ebsd = loadEBSD(par.fname, 'convertEuler2SpatialReferenceFrame');
     par.CS = ebsd.CSList;
 else
     n_par = size(cfgcell,1);
@@ -68,6 +68,7 @@ par.nx = getparval(cfgcell,'nx',40);
 par.cutoff = getparval(cfgcell,'cutoff',1);
 par.test = getparval(cfgcell,'test',0);
 par.dev = getparval(cfgcell,'dev',1);
+par.voronoi = getparval(cfgcell,'voronoi',1);
 
 % Plotting toggles
 par.gb_min = getparval(cfgcell,'gb_min',10);

@@ -2,7 +2,7 @@
 % Rellie M. Goddard, July 2020
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [ebsd,grains,subgrains] = ProcessEBSD_fun(fullname, gb_min, sg_min, CS, test, Phase_map, Band_contrast)
+function [ebsd,grains,subgrains] = ProcessEBSD_fun(fullname, gb_min, sg_min, CS, test, Phase_map, Band_contrast, voronoi)
 
 
 % Create an EBSD variable containing the data
@@ -17,6 +17,12 @@ if test ~= 0
     end
 end 
 
+if voronoi == 1
+    voronoi = 'Voronoi';
+else
+    voronoi = 'UnitCell';
+end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Rotate data - map and orientaitons
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -28,7 +34,7 @@ ebsd = rotate(ebsd,rot);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Grain detection and noise removal
-[grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd,'angle',gb_min*degree);   %%%%%  <<<< ADD 'UnitCell' AS AN OPTION IN HERE IF THERE ARE TOO MANY POINTS FOR VORONOI
+[grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd,'angle',gb_min*degree, voronoi);
 
 % Remove wild spikes and shards
 wild = grains.grainSize == 1;
@@ -39,15 +45,20 @@ ebsd(grains(shard)).phase = 0;
 % Find small non-indexed regions to remove
 % Higher thresholds mean more of the non-indexed regions will be filled in.
 threshold = 1;
-[grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd,'angle',gb_min*degree);   %%%%%  <<<< ADD 'UnitCell' AS AN OPTION IN HERE IF THERE ARE TOO MANY POINTS FOR VORONOI
+[grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd,'angle',gb_min*degree, voronoi);
 notIndexed = grains('notIndexed');
 toRemove = notIndexed(notIndexed.grainSize<threshold);
 ebsd(toRemove) = [];
 
 % Reconstruct grains and subgrains
-[grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd,'angle',gb_min*degree);   %%%%%  <<<< ADD 'UnitCell' AS AN OPTION IN HERE IF THERE ARE TOO MANY POINTS FOR VORONOI
-subgrains = calcGrains(ebsd,'angle',sg_min*degree);
-
+[grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd,'angle',gb_min*degree, voronoi);
+% Save time by only calculating subgrains if plotting phase or BC,
+% otherwise it's not needed
+if Phase_map || Band_contrast
+    subgrains = calcGrains(ebsd,'angle',sg_min*degree, voronoi);
+else
+    subgrains = [];
+end
 
 % Fill non-indexed regions by interpolation. Does not fill in regions that are 
 % larger than the threshold

@@ -87,7 +87,7 @@ Burgers = par.Burgers; % Burgers vector of phase of interest. Values used in the
 Shear_M = par.Shear_M; % Shear modulus of phase of interest. Values used in the Goddard et al. (2020) paper are: 4.2*10^4 MPa (Quartz), 7.78*10^4 MPa (Fo90), and 6.26*10^4 MPa(Fo50).
 plot_flg = par.plt_flg; % set the iteration numbers that you would like to plot (0-9). Keep empty to plot none, set to 10 for all
 dev = par.dev; % Set to 1 to use development codes
-
+voronoi = par.voronoi; % Use vornonoi decomposition
 %% END OF USER INPUTS
 
 %% Create empty arrays to store data within
@@ -101,7 +101,7 @@ Lengths_X_1 =[];
 Lengths_Y_1 =[];
 
 %% Calculate and plot
-[ebsd,grains,subgrains] = ProcessEBSD_fun(fname,gb_min,sg_min, CS, test, Phase_map, Band_contrast);
+[ebsd,grains,subgrains] = ProcessEBSD_fun(fname,gb_min,sg_min, CS, test, Phase_map, Band_contrast, voronoi);
 fprintf('Data Loaded\n')
 % Linear intercept analysis
 
