@@ -105,7 +105,15 @@ Lengths_Y_1 =[];
 fprintf('Data Loaded\n')
 % Linear intercept analysis
 
+results = [par.file(1:end-4) '_outputs' filesep par.file(1:end-4) '_results.txt'];
+fid = fopen(results, 'w');
+fprintf(fid,'ProcessESB_LinearIntercepts Results\n');
+fprintf(fid,'Sample:\t\t\t%s\n', par.file);
+fprintf(fid,'N_intercepts:\t%.0f\n', nx);
+
+
 if Check_different_misorientation == 1
+    fprintf(fid,'\nChecking Different Misorientations\n');
     for cutoff = 1:1:10
         fprintf('Check %.0f degree Misorientation Angle\n', cutoff)
         Mis_orientation = [Mis_orientation, cutoff];
@@ -125,6 +133,7 @@ if Check_different_misorientation == 1
     for a = 1:10
         MA(end+1) = Mis_orientation(a);
         SG(end+1) = Subgrain_mis_ori(a);
+        fprintf(fid,'Misorientation:\t%.0f\260\t\tLambda:\t%.2f \xB5m\n', MA(end), SG(end));
     end
     
     figure
@@ -150,11 +159,14 @@ if Check_different_misorientation == 1
     plot(MA, Z, 'black','LineWidth',2);
     box on
     
+    cutoff = 1;
+
 elseif Check_different_misorientation == 0
     fprintf('Check %.0f degree Misorientation Angle\n', cutoff)
     [Mean_Lengths_X,Mean_Lengths_Y, lengths_x, lengths_y] = LinearIntercepts_fun(ebsd,nx,ny,cutoff,phase,crystal, plot_flg, dev);
     Lengths_X_1 = [Lengths_X_1, lengths_x];
     Lengths_Y_1 = [Lengths_Y_1, lengths_y];
+    fprintf(fid,'Misorientation:\t%.0f\260\t\tLambda:\t%.2f \xB5m\n', cutoff, SG(end));
 end
 
 fprintf('Plotting Line Intercept Histogram\n')
@@ -178,10 +190,14 @@ ylabel('Probability')
 title(['arithmetic mean = ' num2str(round(a_mean_RG, 2)) ' \mum'])
 box on
 
+fprintf(fid,'\nUsed Line Intercept Length (lambda)\n');
+fprintf(fid,'Misorientation:\t%.0f\260\t\tLambda:\t%.2f \xB5m\n', cutoff, round(a_mean_RG, 2));
 
 % Getting a stress from the Goddard et al. (2020) piezometer
 if SG_piezometer == 1
     fprintf('Calculating Stresses\n')
+    fprintf(fid,'\nCalculating Stresses\n');
+    fprintf(fid,'Burgers:\t\t%.2e \xB5m\nShear_M:\t\t%.2e MPa\n',Burgers, Shear_M);
     Equivalent_stress = [];
     [Equivalent_stress(1)] = Stress_Calulation_fun(Burgers,Shear_M,1,a_mean_RG);
     [Equivalent_stress(2)] = Stress_Calulation_fun(Burgers,Shear_M,2,a_mean_RG);
@@ -189,5 +205,9 @@ if SG_piezometer == 1
     % Print Von Mises Equilivant_Stress
     fprintf('\tCalibrated Stress:\t%.2f MPa\n', Equivalent_stress(1))
     fprintf('\tUnCalibrated Stress:\t%.2f MPa\n', Equivalent_stress(2))
+    fprintf(fid,'Calibrated:\t\t%.2f MPa\n', Equivalent_stress(1));
+    fprintf(fid,'UnCalibrated:\t%.2f MPa\n', Equivalent_stress(2));
 end
+
+fclose(fid);
 end
