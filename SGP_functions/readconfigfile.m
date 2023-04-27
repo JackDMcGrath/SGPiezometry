@@ -21,7 +21,7 @@ function [par] = readconfigfile(cfgfile)
 
 % test that config file exists
 if ~isfile(cfgfile)
-    disp('Config file not found, continuing with default values.')
+    error('Config file not found, exiting....')
 end
 
 % load the config file as a cell array
