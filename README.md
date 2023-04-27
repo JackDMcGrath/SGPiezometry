@@ -9,7 +9,7 @@ Currently, to ensure that you use this sped-up version, ensure that the 'dev' fl
 
 3) Further increases in processing time are availiable by deactivating the voronoi spatial decomposition, and instead just using UnitCell
 
-4) Parameters are now listed in a .conf file, and read into the commands this way. Consequently, scripts are now functions, and are run from the command line, e.g., ProcessEBSD_LinearIntercepts('Example.conf')
+4) Parameters are now listed in a .conf file, and read into the commands this way. Consequently, scripts are now functions, and can be run either from the command line, e.g., ProcessEBSD_LinearIntercepts('Example.conf'), or from run_SGP.m
 
 References:  
 Goddard, R.M., Hansen, L.N., Wallis, D., Stipp, M., Holyoke III, C.W., Kumamoto, K.M. and Kohlstedt, D.L., 2020. A subgrain‐size piezometer calibrated for EBSD. Geophysical Research Letters, 47(23), p.e2020GL090056.  
