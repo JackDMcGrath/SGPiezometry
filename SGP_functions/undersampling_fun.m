@@ -14,6 +14,11 @@ if nargin < 16
     dev = 0;
 end
 
+outdir = [sampname '_outputs'];
+if ~exist(outdir, 'dir')
+    mkdir(outdir)
+end
+
 %%%%%% User Inputs%%%%%%
 for Int = 1:1:Int_max
 fname_new = [sampname '_int' num2str(Int)];
@@ -63,11 +68,11 @@ data_new(header_size+1:end) = data(ind+header_size);
 
 
 %Write to new ctf file
-fileid = fopen([fname_new '.ctf'],'w');
+fname = [outdir filesep fname_new '.ctf'];
+fileid = fopen(fname,'w');
 fprintf(fileid,'%s\r\n',data_new{:,:});
 fclose(fileid);
 
-fname = [fname_new '.ctf'];
 if ismember(Int, plot_its)
     [ebsd,grains,subgrains] = ProcessEBSD_fun(fname, gb_min, sg_min, CS, test, Phase_map, Band_contrast, voronoi);
     [Mean_Lengths_X,Mean_Lengths_Y, lengths_x, lengths_y] = LinearIntercepts_fun(ebsd,nx,ny,cutoff,phase,crystal, 1, dev);
