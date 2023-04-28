@@ -5,7 +5,7 @@
 
 % Jack McGrath, 2023, Uni of Leeds
 
-config = 'CPA2_again.conf';
+config = 'Example.conf';
 
 %% Select which scripts to run
 % Sensitivity Tests
@@ -26,9 +26,32 @@ if resetFigs
     close all
 end
 
-%% Create directory to store outputs
+%% Check Phases and Crystal Symmetry
 par = readconfigfile(config);
 
+fprintf('Analysing Sample %s\n', par.file)
+fprintf('Phase\tMineral\t\tColor\t\tSymmetry\n')
+minerals = {};
+for ii = 1:size(par.CS,2)
+    if strcmpi(par.CS{ii}, 'NotIndexed')
+        fprintf('%.0f\tnotIndexed\n', ii-1)
+        minerals{ii} = 'notIndexed';
+    else
+        fprintf('%.0f\t%s\t%s\t%s\n', ii-1, par.CS{ii}.mineral, par.CS{ii}.color, par.CS{ii}.pointGroup)
+        minerals{ii} = par.CS{ii}.mineral;
+    end
+end
+
+if find(ismember(minerals, par.phase))
+    fprintf('\nUsing %s Sub-Grain Piezometer\n', par.phase)
+    par.crystal = par.CS{find(ismember(minerals, par.phase))}.lattice;
+    fprintf('Crystal System set to %s\n\n', par.crystal)
+else
+    fprintf('\n%s not listed in Crystal Symmetry! Quitting....\n', par.phase)
+    return
+end
+
+%% Create directory to store outputs
 if strcmpi(par.file(end-3:end), '.ctf')
     outdir = [par.file(1:end-4) '_outputs'];
     if ~exist(outdir, 'dir')
