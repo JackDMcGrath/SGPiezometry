@@ -91,7 +91,7 @@ voronoi = par.voronoi; % Use vornonoi decomposition
 %% END OF USER INPUTS
 
 %% Programmatically calculate other necessary variables
-temp = split(fname, {'/','.'});
+temp = split(fname, {filesep,'.'});
 sampname = temp{end-1}; % Extract file name with no extension
 ny = nx; % Set number of intercepts in y-direction to equal number of intercepts in the x-direction.
 
