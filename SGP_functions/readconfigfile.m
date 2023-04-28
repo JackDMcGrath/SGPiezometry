@@ -115,7 +115,12 @@ function [val] = getparval(cfgcell,parstring,defval,indn)
     try
 %         val = cfgcell{strcmp(cfgcell(:,1), parstring),2};
         indx = find(strcmp(cfgcell(:,1), parstring));
-        val = cfgcell{indx(indn),2};
+        % Check given windows paths contain ':'
+        if size(cfgcell,2) == 3 && strcmp(parstring, 'pname')
+            val = [cfgcell{indx(indn),2},':',cfgcell{indx(indn),3}];
+        else
+            val = cfgcell{indx(indn),2};
+        end
         if ismissing(val)
             val = defval;
         end
