@@ -1,4 +1,4 @@
-function prep_mtex(SGPpath, mtex_version)
+function prep_mtex(SGPpath, mtexPath, mtexVersion)
 % Function to prepare mtex and set up the correct paths. Edit the default
 % path to the SGPeizometery software. Adding this script to your default
 % MATLAB search path (or at softlinking to it) will mean that this script
@@ -13,16 +13,25 @@ if nargin < 1
 end
 
 if nargin < 2
-    mtex_version = '5.1.1SGP';
-else
-    mtex_version = version;
+    mtexPath = '/nfs/a285/homes/eejdm/software';
 end
+
+if nargin < 3
+    mtexVersion = '5.1.1';
+end
+
+mtex = [mtexPath filesep 'mtex-', mtexVersion];
 
 curdir = pwd;
 
-mtex = [SGPpath, filesep, 'mtex-', mtex_version];
-
 fprintf('mtex location: %s\n', mtex)
+
+% New MTEX files to be added to your matlab version
+newMTEX = [SGPpath filesep 'newMTEX' filesep];
+EBSD = [mtex filesep 'EBSDAnalysis' filesep '@EBSD' filesep];
+
+copyfile([newMTEX 'findByXLocation.m'], EBSD)
+copyfile([newMTEX 'findByYLocation.m'], EBSD)
 
 % Some MTEX commands have the same name as actual matlab commands for
 % compatibility reasons. Turn off warning during installation
