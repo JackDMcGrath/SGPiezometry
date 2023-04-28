@@ -77,7 +77,13 @@ if ismember(Int, plot_its)
     [ebsd,grains,subgrains] = ProcessEBSD_fun(fname, gb_min, sg_min, CS, test, Phase_map, Band_contrast, voronoi);
     [Mean_Lengths_X,Mean_Lengths_Y, lengths_x, lengths_y] = LinearIntercepts_fun(ebsd,nx,ny,cutoff,phase,crystal, 1, dev);
 else
-    [ebsd,grains,subgrains] = ProcessEBSD_fun(fname, gb_min, sg_min, CS, test, 0, 0, voronoi);
+    if Int == 1
+        % So that full res band contrast and Phase maps are plotted if
+        % asked for
+        [ebsd,grains,subgrains] = ProcessEBSD_fun(fname, gb_min, sg_min, CS, test, Phase_map, Band_contrast, voronoi);
+    else
+        [ebsd,grains,subgrains] = ProcessEBSD_fun(fname, gb_min, sg_min, CS, test, 0, 0, voronoi);
+    end
     [Mean_Lengths_X,Mean_Lengths_Y, lengths_x, lengths_y] = LinearIntercepts_fun(ebsd,nx,ny,cutoff,phase,crystal, 0, dev);
 end
 d_h = lengths_x;
